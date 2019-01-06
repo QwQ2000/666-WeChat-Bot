@@ -9,12 +9,11 @@ templates = ['.*说到.*(我就想起了.*)*','惊闻.*深感.*','\.\.两开花'
     '我将继续扮演.*','.*叔叔.*到底有几.*啊','.*显神通.*样样有','体验不一样的.*文化','.*要向全国人民谢罪','师父我们走','师父，我们走']
 words = ['六小龄童','妖精','金猴皮鞋','皮鞋','营养钙面','六小灵童','孙悟空','美猴王','开花','六学','西游',
     '西天取经','白骨精','大闹天宫','身份证','签售','签书','敢问路在何方','中美合拍','中外合拍','章金莱']
-viwords = ['零糖麦片','章口就莱','灵堂卖片','遛小龄童','遛小灵童','战术后仰','野生锁链','章承恩']
+viwords = ['零糖麦片','章口就莱','灵堂卖片','遛小龄童','遛小灵童','战术后仰','野生锁链','章承恩','文体两开花','文体百花齐放']
 crDict = {}
 sentences = []
 lock = threading.Lock()
-noRepeat = None #我真的不知道这个库为什么会不由自主的复读
-
+helpStr = '我记录群六学也只是代表我本人的一种风格，我怎么会去说我是正宗、唯一？不可能。\n$[言论]$ 判定是否为六学言论 例：$戏说不是胡说，改编不是乱编$\n$666$ 返回群六学度\n$6star$ 评选群六学之星\n$help$ 使用帮助'
 check = lambda s:tCheck(s) or wCheck(s) or sCheck(s)
 
 def record(flag,name,nickName):
@@ -29,10 +28,6 @@ def record(flag,name,nickName):
 
 @itchat.msg_register(TEXT, isGroupChat = True)
 def text_reply(msg):
-    global noRepeat
-    if msg == noRepeat:
-        return
-    noRepeat = msg
     with lock:
         if msg['FromUserName'] in crDict:
             if crDict[msg['FromUserName']] in db['names']:
@@ -45,7 +40,7 @@ def text_reply(msg):
                     else:
                         msg.user.send('我看着贵群六度从28上升到82，我太了解贵群了。\n群六度:%.2f%%' % (db['chatrooms'][name]['666'] / db['chatrooms'][name]['total'] * 100))
                 elif msg['Content'] == '$help$':
-                    msg.user.send('我记录群六学也只是代表我本人的一种风格，我怎么会去说我是正宗、唯一？不可能。\n$[言论]$ 判定是否为六学言论 例：$戏说不是胡说，改编不是乱编$\n$666$ 返回群六学度\n$help$ 使用帮助')
+                    msg.user.send(helpStr)
                 elif msg['Content'] == '$6star$':
                     if not name in db['chatrooms'] or not db['chatrooms'][name]['total']:
                         msg.user.send('无本群数据。你记录群六学数据，你说你记录的比我好，来，你上来试试。')
