@@ -138,6 +138,8 @@ print('“六六六”微信六学机器人，指令章口就莱，管理得心�
 print('>荣耀归于六学家')
 while 1:
     cmd = input('>')
+    if cmd == '':
+        continue
     if cmd[0] == 'h':
         print("""指令列表，我从28条记到82条，我太了解他了:
         a(add) [name]:增加新的群聊
